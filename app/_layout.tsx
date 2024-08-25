@@ -1,9 +1,14 @@
 import { useFonts } from 'expo-font';
-import { SplashScreen, Stack } from 'expo-router';
+import { SplashScreen, Stack, Tabs, router } from 'expo-router';
 import { useEffect } from 'react';
-import { TamaguiProvider } from 'tamagui';
-
+import { TamaguiProvider, Theme } from 'tamagui';
 import config from '../tamagui.config';
+
+export const unstable_settings = {
+  // Ensure that reloading on `/modal` keeps a back button present.
+  initialRouteName: '(tabs)',
+};
+
 
 export default function Layout() {
   const [loaded] = useFonts({
@@ -14,6 +19,7 @@ export default function Layout() {
   useEffect(() => {
     if (loaded) {
       SplashScreen.hideAsync();
+      router.navigate("/(tabs)/")
     }
   }, [loaded]);
 
@@ -21,7 +27,11 @@ export default function Layout() {
 
   return (
     <TamaguiProvider config={config}>
-      <Stack />
+      <Theme name="light">
+        <Stack>
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        </Stack>
+      </Theme>
     </TamaguiProvider>
   );
 }
